@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Mathsnake – ormen som växer när du räknar rätt</title>
+<meta name="description" content="Klassiska ormen med matte: ät upp äpplet med rätt svar så blir ormen längre. En minut per omgång, inga texter att läsa – bara siffror, symboler och en orm. Gratis räknespel för barn 6–9 år.">
+<link rel="canonical" href="https://mathsnake.shipholm.dev/">
+<meta name="theme-color" content="#2f7d4f">
+<meta name="color-scheme" content="light">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mathsnake">
+<meta property="og:title" content="Mathsnake – rätt svar gör ormen längre">
+<meta property="og:description" content="En orm, tre äpplen och en fråga. Ät rätt svar, väx, och håll ut i en minut. Inga ord – bara siffror.">
+<meta property="og:url" content="https://mathsnake.shipholm.dev/">
+<meta property="og:image" content="https://mathsnake.shipholm.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="sv_SE">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" sizes="48x48">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/fonts/fredoka-600.ttf" as="font" type="font/ttf" crossorigin>
+<style>
+  @font-face{font-family:Fredoka;src:url(/fonts/fredoka-400.ttf) format("truetype");font-weight:400;font-display:swap}
+  @font-face{font-family:Fredoka;src:url(/fonts/fredoka-500.ttf) format("truetype");font-weight:500;font-display:swap}
+  @font-face{font-family:Fredoka;src:url(/fonts/fredoka-600.ttf) format("truetype");font-weight:600;font-display:swap}
+  @font-face{font-family:Fredoka;src:url(/fonts/fredoka-700.ttf) format("truetype");font-weight:700;font-display:swap}
+</style>
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["Game", "SoftwareApplication"],
+  "name": "Mathsnake",
+  "url": "https://mathsnake.shipholm.dev/",
+  "description": "Ormen som växer när barnet räknar rätt. Tre äpplen med svar i spelplanen, en fråga i taget och en minut per omgång. Symboler i stället för text.",
+  "applicationCategory": "EducationalApplication",
+  "applicationSubCategory": "Räknespel",
+  "operatingSystem": "iPad, iPhone, Android, dator",
+  "inLanguage": "sv-SE",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "SEK" },
+  "audience": { "@type": "EducationalAudience", "educationalRole": "student", "audienceType": "Barn 6–9 år" },
+  "educationalUse": ["Spel", "Räkning", "Huvudräkning"],
+  "learningResourceType": "Spel",
+  "teaches": ["Huvudräkning inom 20", "Känna igen siffror", "Hålla fokus en kort stund"],
+  "publisher": { "@type": "Organization", "name": "Skolappar", "url": "https://www.skolappar.com" },
+  "screenshot": "https://mathsnake.shipholm.dev/kort.png"
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <header class="topp">
+    <div class="vanster">
+      <p class="namn">Mathsnake</p>
+    </div>
+    <p class="fraga" data-fraga aria-live="polite">3 + 4</p>
+    <p class="mat" data-mat aria-label="Äpplen uppätna">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="14.4" r="6.9"/><path d="M12 7.5V4.9" fill="none" stroke="#7d3b2a" stroke-width="2" stroke-linecap="round"/><path d="M12.6 5.6c1.4-1.9 3.2-2.3 4.4-1.7-.9 1.9-2.5 2.6-4.4 1.7Z"/></svg>
+      <span data-mat-tal>0</span>
+    </p>
+    <button type="button" class="liten" data-ljud aria-pressed="true" aria-label="Ljud på eller av">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h3l4-4v14l-4-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7"/></svg>
+    </button>
+  </header>
+
+  <main id="scen">
+    <canvas id="duk" aria-label="Spelplan med orm och äpplen"></canvas>
+    <div class="tid" data-tid aria-hidden="true"><i data-tid-fyll></i></div>
+  </main>
+</div>
+  <div class="slut" data-slut hidden>
+    <svg class="slut-apple" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.2c-1.2-1.6-3.6-2-5.2-.6C4.9 8.2 5 11.2 6.6 13.4 8 15.4 10.3 18.2 12 18.2s4-2.8 5.4-4.8C19 11.2 19.1 8.2 17.2 6.6 15.6 5.2 13.2 5.6 12 7.2Z"/><path d="M12 7.2c0-1.7.6-2.9 2-3.6" fill="none" stroke="#7d3b2a" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <p class="slut-tal" data-slut-tal>0</p>
+    <button type="button" class="igen" data-igen aria-label="Spela igen">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg>
+    </button>
+  </div>
+<script src="/app.js"></script>
+<!-- START:startskarm -->
+<style>
+  #startskarm {
+    position: fixed; inset: 0; z-index: 2147483000;
+    background: #faf7f2; color: #14181f;
+    font-family: "Fredoka", "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: grid; place-items: center;
+    padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+    overflow: auto;
+    opacity: 1; transition: opacity .22s ease;
+  }
+  #startskarm.dold { opacity: 0; pointer-events: none; }
+  #startskarm .start {
+    width: 100%; max-width: 620px; display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+  }
+  #startskarm .tile {
+    width: clamp(84px, 13vmin, 120px); height: clamp(84px, 13vmin, 120px);
+    border-radius: 26%; background: #e1e9df;
+    box-shadow: 0 10px 30px -14px rgba(20,24,31,.35), inset 0 0 0 1px rgba(20,24,31,.06);
+    display: grid; place-items: center; overflow: hidden;
+  }
+  #startskarm .tile img { width: 100%; height: 100%; display: block; }
+  #startskarm h1 {
+    margin: clamp(18px, 3.2vmin, 30px) 0 0;
+    font-size: clamp(38px, 7.4vmin, 68px); line-height: 1.02;
+    letter-spacing: -0.028em; font-weight: 800; color: #14181f;
+  }
+  #startskarm .tag {
+    margin: clamp(8px, 1.4vmin, 14px) 0 0;
+    font-size: clamp(16px, 2.35vmin, 23px); line-height: 1.35;
+    color: #4a5260; max-width: 34ch;
+  }
+  #startskarm .chips {
+    list-style: none; display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 8px; padding: 0; margin: clamp(16px, 2.6vmin, 24px) 0 0;
+  }
+  #startskarm .chips li {
+    font-size: clamp(12px, 1.5vmin, 14px); font-weight: 600; letter-spacing: .01em;
+    padding: 7px 13px; border-radius: 999px; color: #255e40; background: #e1e9df;
+  }
+  #startskarm .play {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: clamp(24px, 4vmin, 38px);
+    padding: clamp(15px, 2.1vmin, 20px) clamp(34px, 5.4vmin, 52px);
+    border: 0; border-radius: 999px; background: #2d7f50; color: #fff;
+    font: inherit; font-size: clamp(18px, 2.4vmin, 24px); font-weight: 700;
+    letter-spacing: -0.01em; cursor: pointer;
+    box-shadow: 0 14px 28px -14px #2d7f5099;
+    transition: transform .16s ease; -webkit-tap-highlight-color: transparent;
+  }
+  #startskarm .play:hover { transform: translateY(-1px); }
+  #startskarm .play:active { transform: scale(.985); }
+  #startskarm .play svg { width: 1em; height: 1em; }
+  #startskarm .note {
+    margin: clamp(18px, 2.6vmin, 26px) 0 0;
+    font-size: clamp(12px, 1.5vmin, 14px); color: #4a5260; opacity: .8;
+  }
+  #startskarm .note a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(74,82,96,.3); }
+  #startskarm .lgr22 {
+    margin: clamp(14px, 2.2vmin, 20px) 0 0; max-width: 46ch;
+    font-size: clamp(12px, 1.45vmin, 13.5px); color: #4a5260;
+    text-align: left;
+  }
+  #startskarm .lgr22 summary {
+    list-style: none; cursor: pointer; text-align: center;
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    opacity: .72; padding: 6px 2px; border-radius: 8px;
+  }
+  #startskarm .lgr22 summary::-webkit-details-marker { display: none; }
+  #startskarm .lgr22 summary:hover, #startskarm .lgr22 summary:focus-visible { opacity: 1; }
+  #startskarm .lgr22 summary:focus-visible { outline: 2px solid #2d7f5066; outline-offset: 2px; }
+  #startskarm .lgr22-info {
+    width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center;
+    background: #e1e9df; color: #255e40; font-size: 10px; font-weight: 700;
+    font-style: normal; line-height: 1; flex: 0 0 auto;
+  }
+  #startskarm .lgr22-pil { transition: transform .18s ease; font-size: .9em; }
+  #startskarm .lgr22[open] summary { opacity: 1; }
+  #startskarm .lgr22[open] .lgr22-pil { transform: rotate(90deg); }
+  #startskarm .lgr22-kropp {
+    margin-top: 10px; padding: 10px 12px; border-radius: 12px;
+    background: #e1e9df; line-height: 1.45;
+  }
+  #startskarm .lgr22-kropp p { margin: 0; }
+  #startskarm .lgr22-amne { font-weight: 600; color: #255e40; }
+  #startskarm .lgr22-kropp blockquote {
+    margin: 7px 0 0; padding-left: 10px; border-left: 2px solid #2d7f5044;
+    font-style: italic;
+  }
+  #startskarm .lgr22-kalla { margin-top: 5px !important; font-size: .92em; opacity: .75; }
+  #startskarm .lgr22-koppling { margin-top: 8px !important; }
+  @media (max-height: 470px) {
+    #startskarm h1 { font-size: clamp(30px, 6vmin, 44px); }
+    #startskarm .tag, #startskarm .note, #startskarm .lgr22 { display: none; }
+    #startskarm .play { margin-top: 20px; }
+  }
+</style>
+<div id="startskarm" role="dialog" aria-label="Mathsnake" data-play-href="/">
+  <div class="start">
+    <div class="tile"><img src="/icon-512.png" alt="" width="512" height="512"></div>
+    <h1>Mathsnake</h1>
+    <p class="tag">en orm, tre äpplen och en fråga</p>
+    <ul class="chips"><li>Spel</li><li>Matematik</li><li>Förskoleklass till åk 2</li></ul>
+    <button class="play" type="button" data-play-href="/">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l11-6.86a1 1 0 0 0 0-1.7l-11-6.86A1 1 0 0 0 8 5.14Z"/></svg>
+      Spela
+    </button>
+    <p class="note">Gratis · ingen inloggning · <a href="https://www.skolappar.com">skolappar.com</a></p>
+    <details class="lgr22">
+      <summary><span class="lgr22-info" aria-hidden="true">i</span>Koppling till läroplanen (Lgr22)<span class="lgr22-pil" aria-hidden="true">›</span></summary>
+      <div class="lgr22-kropp">
+        <p class="lgr22-amne">Matematik · Förskoleklass till åk 2</p>
+        <blockquote>”De fyra räknesättens egenskaper och samband samt användning i olika situationer.”<span class="lgr22-kalla"> Lgr22, centralt innehåll åk 1–3.</span></blockquote><blockquote>”Metoder för beräkningar med naturliga tal, vid huvudräkning, överslagsräkning och skriftlig beräkning.”<span class="lgr22-kalla"> Lgr22, centralt innehåll åk 1–3.</span></blockquote><blockquote>”Naturliga tal och deras egenskaper samt hur talen delas upp och används för att ange antal och ordning.”<span class="lgr22-kalla"> Lgr22, centralt innehåll åk 1–3.</span></blockquote>
+        <p class="lgr22-koppling"><strong>Så tränas det:</strong> Barnet räknar huvudräkning i en fråga i taget, jämför tre svarsalternativ och får svar direkt – rätt svar gör ormen längre, fel svar kortare. Talkamrater och tiokamrater tränas utan att något behöver läsas.</p>
+      </div>
+    </details>
+  </div>
+</div>
+<script>
+  (function () {
+    var s = document.getElementById('startskarm');
+    var path = location.pathname.replace(/index[.]html$/, '');
+    if (path !== '/' && path !== '') { s.remove(); return; }
+    var d = document.documentElement, b = document.body;
+    var prev = [d.style.overflow, b.style.overflow];
+    d.style.overflow = 'hidden'; b.style.overflow = 'hidden';
+    s.querySelector('.play').addEventListener('click', function () {
+      d.style.overflow = prev[0]; b.style.overflow = prev[1];
+      s.classList.add('dold');
+      s.setAttribute('aria-hidden', 'true');
+      setTimeout(function () { s.remove(); }, 240);
+      var to = s.getAttribute('data-play-href');
+      if (to && to !== '/' && to !== location.pathname) { location.href = to; }
+      document.dispatchEvent(new CustomEvent('startskarm:spela'));
+    });
+  })();
+</script>
+<!-- SLUT:startskarm -->
+</body>
+</html>

@@ -1,0 +1,111 @@
+:root{
+  --papper:#faf7f2;
+  --ink:#14181f;
+  --diskret:#4a5260;
+  --gron:#2f7d4f;
+  --gron-djup:#1f5a38;
+  --gron-tvatt:#e6f1e9;
+  --apple:#d4453f;
+  --apple-tvatt:#fbe9e7;
+  --linje:rgba(20,24,31,.09);
+  --topp-h:clamp(58px,8.2vmin,76px);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--papper);color:var(--ink);
+  font-family:Fredoka,Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:none;
+  touch-action:none;
+}
+#app{height:100dvh;display:flex;flex-direction:column}
+
+/* ── topp ─────────────────────────────────────────────── */
+.topp{
+  height:var(--topp-h);flex:0 0 auto;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;
+  padding:0 clamp(12px,2.2vmin,20px);
+  border-bottom:1px solid var(--linje);
+  background:var(--papper);
+}
+.namn{
+  margin:0;font-size:clamp(12px,1.5vmin,14px);font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--diskret);opacity:.75;
+}
+.fraga{
+  margin:0;justify-self:center;
+  font-size:clamp(30px,5.4vmin,46px);font-weight:700;letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums;line-height:1;
+  white-space:nowrap;
+}
+.mat{
+  justify-self:end;display:inline-flex;align-items:center;gap:6px;
+  margin:0;font-size:clamp(16px,2.2vmin,22px);font-weight:600;
+  color:var(--gron-djup);font-variant-numeric:tabular-nums;
+}
+.mat svg{width:1.05em;height:1.05em;fill:var(--apple)}
+.liten{
+  margin-left:6px;width:clamp(34px,4.6vmin,42px);height:clamp(34px,4.6vmin,42px);
+  display:grid;place-items:center;border:0;border-radius:50%;
+  background:transparent;color:var(--diskret);cursor:pointer;
+  transition:background .15s ease,opacity .15s ease;
+}
+.liten:hover{background:rgba(20,24,31,.05)}
+.liten svg{width:58%;height:58%;fill:currentColor;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;fill-rule:evenodd}
+.liten[aria-pressed="false"]{opacity:.42}
+.liten[aria-pressed="false"] svg path:last-child{display:none}
+
+/* ── scen ─────────────────────────────────────────────── */
+#scen{position:relative;flex:1 1 auto;min-height:0;overflow:hidden}
+#duk{display:block;width:100%;height:100%;touch-action:none}
+
+.tid{
+  position:absolute;left:50%;transform:translateX(-50%);top:6px;
+  width:min(46%,420px);height:6px;border-radius:999px;
+  background:rgba(20,24,31,.07);overflow:hidden;pointer-events:none;
+}
+.tid i{
+  display:block;height:100%;width:100%;border-radius:999px;
+  background:var(--gron);transform-origin:left center;
+  transition:transform .2s linear,background .3s ease;
+}
+.tid.slut-i{background:transparent}
+
+/* ── slutruta ─────────────────────────────────────────── */
+.slut{
+  position:fixed;inset:0;z-index:20;
+  display:grid;place-content:center;justify-items:center;gap:clamp(6px,1.6vmin,16px);
+  background:var(--papper);
+  animation:tona .2s ease both;
+}
+@keyframes tona{from{opacity:0}to{opacity:1}}
+.slut[hidden]{display:none}
+.slut-apple{width:clamp(46px,9vmin,84px);height:clamp(46px,9vmin,84px);fill:var(--apple)}
+.slut-tal{
+  margin:0;font-size:clamp(52px,13vmin,110px);font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.igen{
+  width:clamp(76px,13vmin,104px);height:clamp(76px,13vmin,104px);
+  display:grid;place-items:center;border:0;border-radius:50%;
+  background:var(--gron);color:#fff;cursor:pointer;
+  box-shadow:0 14px 28px -14px var(--gron);
+  transition:transform .16s ease;
+}
+.igen:active{transform:scale(.96)}
+.igen svg{width:46%;height:46%;stroke:currentColor}
+
+/* ── små skärmar ──────────────────────────────────────── */
+@media (max-width:560px){
+  .topp{grid-template-columns:auto 1fr auto;gap:8px}
+  .namn{display:none}
+  .fraga{justify-self:start;font-size:clamp(26px,7.4vmin,36px)}
+  .mat{font-size:clamp(15px,4.4vmin,19px)}
+}
+@media (max-height:460px){
+  .namn{display:none}
+  .fraga{font-size:clamp(22px,5.4vmin,32px)}
+}
