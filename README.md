@@ -17,13 +17,16 @@ Regeln för den här åldern (förskoleklass–åk 2) är **inga ord i spelvyn**
 | Poängen | äpple + siffra i hörnet |
 | Tiden | en grön linje som krymper, röd sista tiondelen |
 | Slutet | äpple, siffra, en grön uppspelningsknapp |
-| Styrning | tummen: svep åt det håll ormen ska |
+| Styrning | tummen: spaken dyker upp där tummen sätts (Roblox-principen) |
+| Peka-dit | ett kort tryck på ett äpple – ormen hittar vägen själv |
 
 Text finns bara på startskärmen, där en vuxen läser.
 
 ## Spelregler
 
 - Ormen går i ett rutnät (9–19 kolumner beroende på skärm, 11 rader).
+- Två sätt att styra: håll tummen och dra (spaken följer tummen, släpper man
+  fortsätter ormen åt samma håll) eller peka på ett äpple och låt ormen gå dit.
 - Rätt äpple: ormen växer ett led, ny fråga, tre nya äpplen, något snabbare.
 - Fel äpple: ormen krymper två led, äpplet byts mot ett annat fel svar och
   frågan står kvar.
