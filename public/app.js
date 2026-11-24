@@ -16,6 +16,11 @@
   const LJUD_KNAPP = document.querySelector('[data-ljud]');
 
   const OMGANG_MS = 60000;
+
+  // skolappar.com:s räknare (kotten.js i index.html) – bara anonyma antal, appen fungerar utan den
+  const rapport = (namn, värde) => window.skolappar?.event(namn, värde);
+  // svårighetssteget i nyFråga(): 1 (+ inom 10) … 4 (blandat, större)
+  const nivå = (n) => (n < 3 ? 1 : n < 7 ? 2 : n < 12 ? 3 : 4);
   const START_LANGD = 4;
 
   const S = {
@@ -25,7 +30,7 @@
     kör: false, slut: false,
     cell: 40, cols: 16, rows: 11, ox: 0, oy: 0,
     tickMs: 210, ack: 0, ljud: true, svansBort: 0, skak: 0,
-    spak: null, hint: 0, mål: null,
+    spak: null, hint: 0, mål: null, fel: 0,
   };
 
   /* ── plan ─────────────────────────────────────────────── */
@@ -124,12 +129,13 @@
     const startC = Math.max(START_LANGD, Math.floor(S.cols * 0.45));
     for (let i = START_LANGD - 1; i >= 0; i--) S.orm.push({ x: startC - i, y: startR });
     S.riktning = { x: 1, y: 0 }; S.kö = [];
-    S.uppätna = 0; MAT_EL.textContent = '0';
+    S.uppätna = 0; S.fel = 0; MAT_EL.textContent = '0';
     S.tidKvar = OMGANG_MS; S.kör = true; S.slut = false; S.ack = 0; S.tickMs = 210;
     S.spak = null; S.hint = performance.now() + 4200; S.mål = null;
     S.svansBort = 0; S.skak = 0;
     SLUT.hidden = true; SLUT.setAttribute('aria-hidden', 'true');
     nyFråga(); nyÄpplen();
+    rapport('round_start'); rapport('level', 1);
     TID_EL.style.opacity = '1';
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {});
     rita();
@@ -193,6 +199,7 @@
       S.uppätna++;
       MAT_EL.textContent = S.uppätna;
       S.tickMs = Math.max(135, 210 - S.uppätna * 4);
+      if (nivå(S.uppätna) !== nivå(S.uppätna - 1)) rapport('level', nivå(S.uppätna));
       nyFråga(); nyÄpplen();
       ton('rätt');
     } else if (äpple) {
@@ -202,6 +209,7 @@
       const nytt = grannTal(S.fråga.svar).find((t) => !använda.includes(t));
       if (nytt !== undefined) S.äpplen.push({ ...ledigRuta(), tal: nytt, ny: true });
       S.skak = 1;
+      S.fel++; rapport('hint');
       ton('fel');
     }
     if (!växte) {
@@ -217,6 +225,8 @@
     SLUT_TAL.textContent = S.uppätna;
     SLUT.hidden = false; SLUT.setAttribute('aria-hidden', 'false');
     TID_EL.style.opacity = '0';
+    const försök = S.uppätna + S.fel;
+    rapport('round_done', försök ? Math.round((S.uppätna / försök) * 100) : 0);
     ton('slut');
   }
 
@@ -468,6 +478,7 @@ if (S.skak > 0) S.skak = 0;
   LJUD_KNAPP.addEventListener('click', () => {
     S.ljud = !S.ljud;
     LJUD_KNAPP.setAttribute('aria-pressed', String(S.ljud));
+    if (!S.ljud) rapport('sound_off');
   });
 
   IGEN.addEventListener('click', starta);
