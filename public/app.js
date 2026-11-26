@@ -17,7 +17,7 @@
 
   const OMGANG_MS = 60000;
 
-  // skolappar.com:s räknare (kotten.js i index.html) – bara anonyma antal, appen fungerar utan den
+  // skolappar.org:s räknare (kotten.js i index.html) – bara anonyma antal, appen fungerar utan den
   const rapport = (namn, värde) => window.skolappar?.event(namn, värde);
   // svårighetssteget i nyFråga(): 1 (+ inom 10) … 4 (blandat, större)
   const nivå = (n) => (n < 3 ? 1 : n < 7 ? 2 : n < 12 ? 3 : 4);

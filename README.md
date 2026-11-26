@@ -54,4 +54,4 @@ mekaniken går att verifiera headless utan att spela.
 ## Publicering
 
 `Dockerfile` serverar `public/` med nginx. Appen körs på shipholm:
-<https://mathsnake.shipholm.dev/>. Katalogpost på skolappar.com.
+<https://mathsnake.shipholm.dev/>. Katalogpost på skolappar.org.
