@@ -8,7 +8,9 @@
   --apple:#d4453f;
   --apple-tvatt:#fbe9e7;
   --linje:rgba(20,24,31,.09);
-  --topp-h:clamp(58px,8.2vmin,76px);
+  /* minst 80 px: Skolappars hemknapp (Kotten, 56 px + 12 px kant) ska aldrig
+     ligga över spelplanen, så överraden är alltid minst 80 px hög. */
+  --topp-h:clamp(80px,9vmin,96px);
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
@@ -41,8 +43,10 @@ body{
   font-variant-numeric:tabular-nums;line-height:1;
   white-space:nowrap;
 }
+/* äpplen och ljudknappen delar den högra kolumnen i överraden */
+.hoger{justify-self:end;display:flex;align-items:center;gap:6px}
 .mat{
-  justify-self:end;display:inline-flex;align-items:center;gap:6px;
+  display:inline-flex;align-items:center;gap:6px;
   margin:0;font-size:clamp(16px,2.2vmin,22px);font-weight:600;
   color:var(--gron-djup);font-variant-numeric:tabular-nums;
 }
